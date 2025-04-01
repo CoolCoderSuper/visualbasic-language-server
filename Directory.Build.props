@@ -4,7 +4,6 @@
     <Title>vb-ls</Title>
     <Product>vb-ls</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <ChangelogFile>$(MSBuildThisFileDirectory)CHANGELOG.md</ChangelogFile>
   </PropertyGroup>
 
   <ItemGroup>
