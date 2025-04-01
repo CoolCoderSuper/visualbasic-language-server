@@ -1,9 +1,9 @@
-module CSharpLanguageServer.Tests.ReferenceTests
+module VisualBasicLanguageServer.Tests.ReferenceTests
 
 open NUnit.Framework
 open Ionide.LanguageServerProtocol.Types
 
-open CSharpLanguageServer.Tests.Tooling
+open VisualBasicLanguageServer.Tests.Tooling
 
 [<TestCase("TestData/testReferenceWorksDotnet9")>]
 [<TestCase("TestData/testReferenceWorksDotnet8")>]
