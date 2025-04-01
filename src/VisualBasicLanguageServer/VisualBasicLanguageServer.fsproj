@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Description>VisualBasic LSP language server</Description>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>vb-ls</ToolCommandName>
+    <Authors>Joseph Guenther; Saulius Menkevičius</Authors>
+    <Version>0.1.0</Version>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageId>vb-ls</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>vb;lsp;roslyn</PackageTags>
+    <PackageProjectUrl>https://github.com/CoolCoderSuper/visualbasic-language-server</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Nullable>enable</Nullable>
+    <MSBuildTreatWarningsAsErrors>true</MSBuildTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Logging.fs" />
+    <Compile Include="Util.fs" />
+    <Compile Include="Conversions.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="FormatUtil.fs" />
+    <Compile Include="ProgressReporter.fs" />
+    <Compile Include="RoslynHelpers.fs" />
+    <Compile Include="DocumentationUtil.fs" />
+    <Compile Include="Lsp/Client.fs" />
+    <Compile Include="State/ServerState.fs" />
+    <Compile Include="State/ServerRequestContext.fs" />
+    <Compile Include="Handlers/CSharpMetadata.fs" />
+    <Compile Include="Handlers/CallHierarchy.fs" />
+    <Compile Include="Handlers/CodeAction.fs" />
+    <Compile Include="Handlers/CodeLens.fs" />
+    <Compile Include="Handlers/Color.fs" />
+    <Compile Include="Handlers/Completion.fs" />
+    <Compile Include="Handlers/Declaration.fs" />
+    <Compile Include="Handlers/Definition.fs" />
+    <Compile Include="Handlers/Diagnostic.fs" />
+    <Compile Include="Handlers/DocumentFormatting.fs" />
+    <Compile Include="Handlers/DocumentHighlight.fs" />
+    <Compile Include="Handlers/DocumentLink.fs" />
+    <Compile Include="Handlers/DocumentOnTypeFormatting.fs" />
+    <Compile Include="Handlers/DocumentRangeFormatting.fs" />
+    <Compile Include="Handlers/DocumentSymbol.fs" />
+    <Compile Include="Handlers/ExecuteCommand.fs" />
+    <Compile Include="Handlers/FoldingRange.fs" />
+    <Compile Include="Handlers/Hover.fs" />
+    <Compile Include="Handlers/Implementation.fs" />
+    <Compile Include="Handlers/Initialization.fs" />
+    <!--<Compile Include="Handlers/InlayHint.fs" />-->
+    <Compile Include="Handlers/InlineValue.fs" />
+    <Compile Include="Handlers/LinkedEditingRange.fs" />
+    <Compile Include="Handlers/Moniker.fs" />
+    <Compile Include="Handlers/References.fs" />
+    <Compile Include="Handlers/Rename.fs" />
+    <Compile Include="Handlers/SelectionRange.fs" />
+    <Compile Include="Handlers/SemanticTokens.fs" />
+    <Compile Include="Handlers/SignatureHelp.fs" />
+    <Compile Include="Handlers/TextDocumentSync.fs" />
+    <Compile Include="Handlers/TypeDefinition.fs" />
+    <Compile Include="Handlers/TypeHierarchy.fs" />
+    <Compile Include="Handlers/Workspace.fs" />
+    <Compile Include="Handlers/WorkspaceSymbol.fs" />
+    <Compile Include="Lsp/Server.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Argu" />
+    <PackageReference Include="Castle.Core" />
+    <PackageReference Include="FSharp.Control.AsyncSeq" />
+    <PackageReference Include="ICSharpCode.Decompiler" />
+    <PackageReference Include="Ionide.LanguageServerProtocol" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Microsoft.Build.Locator" />
+    <PackageReference Include="Microsoft.Build" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.CodeAnalysis">
+      <NoWarn>NU1604</NoWarn>
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic">
+      <NoWarn>NU1604</NoWarn>
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Features" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
+  </ItemGroup>
+</Project>

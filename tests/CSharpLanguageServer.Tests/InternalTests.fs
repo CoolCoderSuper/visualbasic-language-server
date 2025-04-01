@@ -3,7 +3,7 @@ module CSharpLanguageServer.Tests.InternalTests
 open System
 open NUnit.Framework
 
-open CSharpLanguageServer.RoslynHelpers
+open VisualBasicLanguageServer.RoslynHelpers
 
 [<TestCase("1.csproj:net8.0", "net8.0")>]
 [<TestCase("1.csproj:net8.0,net10.0", "net10.0")>]

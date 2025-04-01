@@ -1,4 +1,4 @@
-module CSharpLanguageServer.Tests.Tooling
+module VisualBasicLanguageServer.Tests.Tooling
 
 open System
 open System.Collections.Generic
@@ -51,7 +51,7 @@ let makeServerProcessInfo projectTempDir =
         |> Path.GetDirectoryName
 
     let baseServerFileName =
-        Path.Combine(baseDir, "src", "CSharpLanguageServer", "bin", buildMode, tfm, "CSharpLanguageServer")
+        Path.Combine(baseDir, "src", "VisualBasicLanguageServer", "bin", buildMode, tfm, "VisualBasicLanguageServer")
 
     let serverFileName =
         match Environment.OSVersion.Platform with
@@ -462,11 +462,11 @@ let prepareTempTestDirFrom (sourceTestDir: DirectoryInfo) : string =
 
     let fileFilter (file: FileInfo) =
         file.Name = ".editorconfig"
-            || file.Extension = ".cs"
-            || file.Extension = ".csproj"
+            || file.Extension = ".vb"
+            || file.Extension = ".vbproj"
             || file.Extension = ".sln"
             || file.Extension = ".slnx"
-            || file.Extension = ".cshtml"
+            || file.Extension = ".vbhtml"
             || file.Extension = ".txt"
 
     let dirFilter sourceSubdirName =
@@ -528,7 +528,7 @@ type FileController (client: MailboxProcessor<ClientEvent>, projectDir: string, 
         fileContents <- Some fileText
 
         let textDocument = { Uri = this.Uri
-                             LanguageId = "csharp"
+                             LanguageId = "vb"
                              Version = 1
                              Text = fileText }
 
