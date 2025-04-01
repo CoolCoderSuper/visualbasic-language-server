@@ -4,7 +4,7 @@ open System
 open System.Threading
 
 open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp.Syntax
+open Microsoft.CodeAnalysis.VisualBasic.Syntax
 open Microsoft.CodeAnalysis.FindSymbols
 open Microsoft.CodeAnalysis.Rename
 open Ionide.LanguageServerProtocol.Server
@@ -73,10 +73,11 @@ module Rename =
         |> Option.defaultValue false
 
     let provider (clientCapabilities: ClientCapabilities): U2<bool, RenameOptions> option =
-        match dynamicRegistration clientCapabilities, prepareSupport clientCapabilities with
-        | true, _ -> None
-        | false, true -> Some (U2.C2 { PrepareProvider = Some true; WorkDoneProgress = None })
-        | false, false -> Some (U2.C1 true)
+        Some (U2.C1 true)
+        //match dynamicRegistration clientCapabilities, prepareSupport clientCapabilities with
+        //| true, _ -> None
+        //| false, true -> Some (U2.C2 { PrepareProvider = Some true; WorkDoneProgress = None })
+        //| false, false -> Some (U2.C1 true)
 
     let registration (clientCapabilities: ClientCapabilities) : Registration option =
         match dynamicRegistration clientCapabilities with
@@ -122,16 +123,14 @@ module Rename =
 
             let spanMaybe =
                 match nodeOnPos with
-                | :? PropertyDeclarationSyntax as propDec              -> propDec.Identifier.Span        |> Some
-                | :? MethodDeclarationSyntax as methodDec              -> methodDec.Identifier.Span      |> Some
-                | :? BaseTypeDeclarationSyntax as typeDec              -> typeDec.Identifier.Span        |> Some
-                | :? VariableDeclaratorSyntax as varDec                -> varDec.Identifier.Span         |> Some
+                | :? PropertyStatementSyntax as propDec              -> propDec.Identifier.Span        |> Some
+                | :? MethodStatementSyntax as methodDec              -> methodDec.Identifier.Span      |> Some
+                | :? TypeStatementSyntax as typeDec              -> typeDec.Identifier.Span        |> Some
+                | :? VariableDeclaratorSyntax as varDec                -> varDec.Span         |> Some
                 | :? EnumMemberDeclarationSyntax as enumMemDec         -> enumMemDec.Identifier.Span     |> Some
                 | :? ParameterSyntax as paramSyn                       -> paramSyn.Identifier.Span       |> Some
                 | :? NameSyntax as nameSyn                             -> nameSyn.Span                   |> Some
-                | :? SingleVariableDesignationSyntax as designationSyn -> designationSyn.Identifier.Span |> Some
-                | :? ForEachStatementSyntax as forEachSyn              -> forEachSyn.Identifier.Span     |> Some
-                | :? LocalFunctionStatementSyntax as localFunStSyn     -> localFunStSyn.Identifier.Span  |> Some
+                | :? ForEachStatementSyntax as forEachSyn              -> forEachSyn.ControlVariable.Span     |> Some
                 | node ->
                     logger.debug (
                         Log.setMessage "textDocument/prepareRename: unhandled Type={type}"

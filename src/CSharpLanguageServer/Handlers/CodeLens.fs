@@ -3,8 +3,8 @@ namespace CSharpLanguageServer.Handlers
 open System
 
 open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Syntax
+open Microsoft.CodeAnalysis.VisualBasic
+open Microsoft.CodeAnalysis.VisualBasic.Syntax
 open Microsoft.CodeAnalysis.Text
 open Ionide.LanguageServerProtocol.Server
 open Ionide.LanguageServerProtocol.Types
@@ -15,7 +15,7 @@ open CSharpLanguageServer.Conversions
 open CSharpLanguageServer.Types
 
 type private DocumentSymbolCollectorForCodeLens(semanticModel: SemanticModel) =
-    inherit CSharpSyntaxWalker(SyntaxWalkerDepth.Token)
+    inherit VisualBasicSyntaxWalker(SyntaxWalkerDepth.Token)
 
     let mutable collectedSymbols = []
 
@@ -26,63 +26,51 @@ type private DocumentSymbolCollectorForCodeLens(semanticModel: SemanticModel) =
     member __.GetSymbols() =
         collectedSymbols |> List.rev |> Array.ofList
 
-    override __.VisitEnumDeclaration(node) =
+    override __.VisitEnumStatement(node) =
         collect node node.Identifier.Span
-        base.VisitEnumDeclaration(node)
+        base.VisitEnumStatement(node)
 
     override __.VisitEnumMemberDeclaration(node) =
         collect node node.Identifier.Span
 
-    override __.VisitClassDeclaration(node) =
+    override __.VisitClassStatement(node) =
         collect node node.Identifier.Span
-        base.VisitClassDeclaration(node)
+        base.VisitClassStatement(node)
 
-    override __.VisitRecordDeclaration(node) =
+    override __.VisitStructureStatement(node) =
         collect node node.Identifier.Span
-        base.VisitRecordDeclaration(node)
+        base.VisitStructureStatement(node)
 
-    override __.VisitStructDeclaration(node) =
+    override __.VisitInterfaceStatement(node) =
         collect node node.Identifier.Span
-        base.VisitStructDeclaration(node)
+        base.VisitInterfaceStatement(node)
 
-    override __.VisitInterfaceDeclaration(node) =
-        collect node node.Identifier.Span
-        base.VisitInterfaceDeclaration(node)
-
-    override __.VisitDelegateDeclaration(node) =
+    override __.VisitDelegateStatement(node) =
         collect node node.Identifier.Span
 
-    override __.VisitConstructorDeclaration(node) =
-        collect node node.Identifier.Span
+    override __.VisitConstructorBlock(node) =
+        collect node node.SubNewStatement.Span
 
-    override __.VisitDestructorDeclaration(node) =
-        collect node node.Identifier.Span
-
-    override __.VisitOperatorDeclaration(node) =
+    override __.VisitOperatorStatement(node) =
         collect node node.OperatorToken.Span
 
-    override __.VisitIndexerDeclaration(node) =
-        collect node node.ThisKeyword.Span
-
-    override __.VisitConversionOperatorDeclaration(node) =
-        collect node node.Type.Span
-
-    override __.VisitMethodDeclaration(node) =
+    override __.VisitMethodStatement(node) =
         collect node node.Identifier.Span
 
-    override __.VisitPropertyDeclaration(node) =
+    override __.VisitPropertyStatement(node) =
         collect node node.Identifier.Span
 
     override __.VisitVariableDeclarator(node) =
-        let grandparent =
-            node.Parent
-            |> Option.ofObj
-            |> Option.bind (fun node -> node.Parent |> Option.ofObj)
+        //let grandparent =
+        //    node.Parent
+        //   |> Option.ofObj
+        //    |> Option.bind (fun node -> node.Parent |> Option.ofObj)
         // Only show field variables and ignore local variables
-        if grandparent.IsSome && grandparent.Value :? FieldDeclarationSyntax then
-            collect node node.Identifier.Span
+        //if grandparent.IsSome && grandparent.Value :? FieldDeclarationSyntax then
+        //    collect node node.Identifier.Span
+        ()//todo: shit
 
-    override __.VisitEventDeclaration(node) =
+    override __.VisitEventStatement(node) =
         collect node node.Identifier.Span
 
 [<RequireQualifiedAccess>]

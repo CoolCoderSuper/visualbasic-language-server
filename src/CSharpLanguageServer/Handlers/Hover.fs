@@ -19,9 +19,10 @@ module Hover =
         |> Option.defaultValue false
 
     let provider (clientCapabilities: ClientCapabilities) : U2<bool, HoverOptions> option =
-        match dynamicRegistration clientCapabilities with
-        | true -> Some (U2.C1 false)
-        | false -> Some (U2.C1 true)
+        Some (U2.C1 true)
+        //match dynamicRegistration clientCapabilities with
+        //| true -> Some (U2.C1 false)
+        //| false -> Some (U2.C1 true)
 
     let registration (clientCapabilities: ClientCapabilities) : Registration option =
         match dynamicRegistration clientCapabilities with

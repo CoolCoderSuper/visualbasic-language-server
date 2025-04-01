@@ -1,8 +1,8 @@
 namespace CSharpLanguageServer
 
 open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Formatting
+open Microsoft.CodeAnalysis.VisualBasic
+open Microsoft.CodeAnalysis.VisualBasic.Formatting
 open Microsoft.CodeAnalysis.Options
 open Microsoft.CodeAnalysis.Text
 open Microsoft.CodeAnalysis.Formatting
@@ -86,14 +86,6 @@ module internal FormatUtil =
                 docOptions
                 |> _.WithChangedOption(FormattingOptions.IndentationSize, LanguageNames.CSharp, int formattingOptions.TabSize)
                 |> _.WithChangedOption(FormattingOptions.UseTabs, LanguageNames.CSharp, not formattingOptions.InsertSpaces)
-                |> match formattingOptions.InsertFinalNewline with
-                   | Some insertFinalNewline ->
-                       _.WithChangedOption(CSharpFormattingOptions.NewLineForFinally, insertFinalNewline)
-                   | None -> id
-                |> match formattingOptions.TrimFinalNewlines with
-                   | Some trimFinalNewlines ->
-                       _.WithChangedOption(CSharpFormattingOptions.NewLineForFinally, not trimFinalNewlines)
-                   | None -> id
     }
 
     let rec getSyntaxNode (token: SyntaxToken) : SyntaxNode option =
@@ -105,7 +97,7 @@ module internal FormatUtil =
             | SyntaxKind.CloseBraceToken ->
                 let parent = token.Parent
                 match parent.Kind() with
-                | SyntaxKind.Block -> parent.Parent |> Some
+                | SyntaxKind.SubBlock -> parent.Parent |> Some//TODO: god dammit
                 | _ -> parent |> Some
             | SyntaxKind.CloseParenToken ->
                 if

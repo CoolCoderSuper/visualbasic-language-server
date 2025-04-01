@@ -22,19 +22,27 @@ module Diagnostic =
         |> Option.defaultValue false
 
     let provider (clientCapabilities: ClientCapabilities): U2<DiagnosticOptions, DiagnosticRegistrationOptions> option =
-        match dynamicRegistration clientCapabilities with
-        | true -> None
-        | false ->
             let diagnosticOptions: DiagnosticRegistrationOptions =
                 { DocumentSelector = Some defaultDocumentSelector
                   WorkDoneProgress = None
                   Identifier = None
-                  InterFileDependencies = false
-                  WorkspaceDiagnostics = false
+                  InterFileDependencies = true
+                  WorkspaceDiagnostics = true
                   Id = None
-                }
-
+               }
             Some (U2.C2 diagnosticOptions)
+        //match dynamicRegistration clientCapabilities with
+        //| true -> None
+        //| false ->
+        //    let diagnosticOptions: DiagnosticRegistrationOptions =
+        //        { DocumentSelector = Some defaultDocumentSelector
+        //          WorkDoneProgress = None
+        //          Identifier = None
+        //          InterFileDependencies = false
+        //          WorkspaceDiagnostics = false
+        //          Id = None
+        //       }
+        //    Some (U2.C2 diagnosticOptions)
 
     let registration (clientCapabilities: ClientCapabilities) : Registration option =
         match dynamicRegistration clientCapabilities with

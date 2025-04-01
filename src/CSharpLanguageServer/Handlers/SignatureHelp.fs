@@ -3,8 +3,8 @@ namespace CSharpLanguageServer.Handlers
 open System
 
 open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Syntax
+open Microsoft.CodeAnalysis.VisualBasic
+open Microsoft.CodeAnalysis.VisualBasic.Syntax
 open Ionide.LanguageServerProtocol.Server
 open Ionide.LanguageServerProtocol.Types
 open Ionide.LanguageServerProtocol.JsonRpc
@@ -103,17 +103,19 @@ module SignatureHelp =
                 match node with
                 | :? InvocationExpressionSyntax as invocation when invocation.ArgumentList.Span.Contains(position) ->
                     Some { Receiver      = invocation.Expression
-                           ArgumentTypes = invocation.ArgumentList.Arguments |> Seq.map (fun a -> semanticModel.GetTypeInfo(a.Expression)) |> List.ofSeq
+                           ArgumentTypes = invocation.ArgumentList.Arguments |> Seq.map (fun a ->
+                           semanticModel.GetTypeInfo(a.GetExpression())) |> List.ofSeq
                            Separators    = invocation.ArgumentList.Arguments.GetSeparators() |> List.ofSeq }
 
-                | :? BaseObjectCreationExpressionSyntax as objectCreation when
+                | :? ObjectCreationExpressionSyntax as objectCreation when
                     objectCreation.ArgumentList
                     |> Option.ofObj
                     |> Option.map (fun argList -> argList.Span.Contains(position))
                     |> Option.defaultValue false
                     ->
                     Some { Receiver      = objectCreation
-                           ArgumentTypes = objectCreation.ArgumentList.Arguments |> Seq.map (fun a -> semanticModel.GetTypeInfo(a.Expression)) |> List.ofSeq
+                           ArgumentTypes = objectCreation.ArgumentList.Arguments |> Seq.map (fun a ->
+                           semanticModel.GetTypeInfo(a.GetExpression())) |> List.ofSeq
                            Separators    = objectCreation.ArgumentList.Arguments.GetSeparators() |> List.ofSeq }
 
                 | :? AttributeSyntax as attributeSyntax when
@@ -123,7 +125,8 @@ module SignatureHelp =
                     |> Option.defaultValue false
                     ->
                     Some { Receiver      = attributeSyntax
-                           ArgumentTypes = attributeSyntax.ArgumentList.Arguments |> Seq.map (fun a -> semanticModel.GetTypeInfo(a.Expression)) |> List.ofSeq
+                           ArgumentTypes = attributeSyntax.ArgumentList.Arguments |> Seq.map (fun a ->
+                           semanticModel.GetTypeInfo(a.GetExpression())) |> List.ofSeq
                            Separators    = attributeSyntax.ArgumentList.Arguments.GetSeparators() |> List.ofSeq }
 
                 | _ ->

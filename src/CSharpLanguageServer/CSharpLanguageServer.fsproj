@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <Description>C# LSP language server</Description>
+    <Description>VisualBasic LSP language server</Description>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>csharp-ls</ToolCommandName>
     <Authors>Saulius Menkevičius</Authors>
@@ -51,7 +51,7 @@
     <Compile Include="Handlers/Hover.fs" />
     <Compile Include="Handlers/Implementation.fs" />
     <Compile Include="Handlers/Initialization.fs" />
-    <Compile Include="Handlers/InlayHint.fs" />
+    <!--<Compile Include="Handlers/InlayHint.fs" />-->
     <Compile Include="Handlers/InlineValue.fs" />
     <Compile Include="Handlers/LinkedEditingRange.fs" />
     <Compile Include="Handlers/Moniker.fs" />
@@ -88,12 +88,12 @@
       <NoWarn>NU1604</NoWarn>
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic">
       <NoWarn>NU1604</NoWarn>
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" />
     <PackageReference Include="Microsoft.CodeAnalysis.Features" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
     <PackageReference Include="Serilog" />

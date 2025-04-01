@@ -15,8 +15,8 @@ open ICSharpCode.Decompiler.CSharp.Transforms
 open Ionide.LanguageServerProtocol
 open Ionide.LanguageServerProtocol.Types
 open Microsoft.CodeAnalysis
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Syntax
+open Microsoft.CodeAnalysis.VisualBasic
+open Microsoft.CodeAnalysis.VisualBasic.Syntax
 open Microsoft.CodeAnalysis.Host
 open Microsoft.CodeAnalysis.Host.Mef
 open Microsoft.CodeAnalysis.MSBuild
@@ -28,7 +28,7 @@ open CSharpLanguageServer.Logging
 
 type DocumentSymbolCollectorForMatchingSymbolName
         (documentUri, sym: ISymbol) =
-    inherit CSharpSyntaxWalker(SyntaxWalkerDepth.Token)
+    inherit VisualBasicSyntaxWalker(SyntaxWalkerDepth.Token)
 
     let mutable collectedLocations = []
     let mutable suggestedLocations = []
@@ -52,8 +52,8 @@ type DocumentSymbolCollectorForMatchingSymbolName
 
     override __.Visit(node) =
         if sym.Kind = SymbolKind.Method then
-            if node :? MethodDeclarationSyntax then
-                let nodeMethodDecl = node :?> MethodDeclarationSyntax
+            if node :? MethodStatementSyntax then
+                let nodeMethodDecl = node :?> MethodStatementSyntax
 
                 if nodeMethodDecl.Identifier.ValueText = sym.Name then
                     let methodArityMatches =
@@ -62,18 +62,18 @@ type DocumentSymbolCollectorForMatchingSymbolName
 
                     collectIdentifier nodeMethodDecl.Identifier methodArityMatches
         else
-            if node :? TypeDeclarationSyntax then
-                let typeDecl = node :?> TypeDeclarationSyntax
+            if node :? TypeStatementSyntax then
+                let typeDecl = node :?> TypeStatementSyntax
                 if typeDecl.Identifier.ValueText = sym.Name then
                     collectIdentifier typeDecl.Identifier false
 
-            else if node :? PropertyDeclarationSyntax then
-                let propertyDecl = node :?> PropertyDeclarationSyntax
+            else if node :? PropertyStatementSyntax then
+                let propertyDecl = node :?> PropertyStatementSyntax
                 if propertyDecl.Identifier.ValueText = sym.Name then
                     collectIdentifier propertyDecl.Identifier false
 
-            else if node :? EventDeclarationSyntax then
-                let eventDecl = node :?> EventDeclarationSyntax
+            else if node :? EventStatementSyntax then
+                let eventDecl = node :?> EventStatementSyntax
                 if eventDecl.Identifier.ValueText = sym.Name then
                     collectIdentifier eventDecl.Identifier false
 
@@ -499,18 +499,18 @@ let findAndLoadSolutionOnDir
         match singleSolutionFound with
         | None ->
             do! logMessage ("no or multiple .sln/.slnx files found on " + dir)
-            do! logMessage ("looking for .csproj/fsproj files on " + dir + "..")
+            do! logMessage ("looking for .vbproj/fsproj files on " + dir + "..")
 
             let projFiles =
-                let csprojFiles = Directory.GetFiles(dir, "*.csproj", SearchOption.AllDirectories)
+                let vbprojFiles = Directory.GetFiles(dir, "*.vbproj", SearchOption.AllDirectories)
                 let fsprojFiles = Directory.GetFiles(dir, "*.fsproj", SearchOption.AllDirectories)
 
-                [ csprojFiles; fsprojFiles ] |> Seq.concat
+                [ vbprojFiles; fsprojFiles ] |> Seq.concat
                                                 |> Seq.filter fileNotOnNodeModules
                                                 |> Seq.toList
 
             if projFiles.Length = 0 then
-                let message = "no or .csproj/.fsproj or sln files found on " + dir
+                let message = "no or .vbproj/.fsproj or sln files found on " + dir
                 do! logMessage message
                 Exception message |> raise
 

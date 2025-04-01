@@ -121,7 +121,7 @@ type CSharpLspServer(
               FoldingRange.registration
               Hover.registration
               Implementation.registration
-              InlayHint.registration
+              //InlayHint.registration
               InlineValue.registration
               LinkedEditingRange.registration
               Moniker.registration
@@ -176,7 +176,7 @@ type CSharpLspServer(
                     // MonikerProvider = Moniker.provider lspClient.Capabilities
                     TypeHierarchyProvider = TypeHierarchy.provider lspClient.Capabilities
                     // InlineValueProvider = InlineValue.provider lspClient.Capabilities
-                    InlayHintProvider = InlayHint.provider lspClient.Capabilities
+                    // InlayHintProvider = InlayHint.provider lspClient.Capabilities
                     DiagnosticProvider = Diagnostic.provider lspClient.Capabilities
                     WorkspaceSymbolProvider = WorkspaceSymbol.provider lspClient.Capabilities }
 
@@ -238,8 +238,8 @@ type CSharpLspServer(
         override __.TextDocumentSemanticTokensFull(p) = p |> withReadOnlyContext SemanticTokens.handleFull
         override __.TextDocumentSemanticTokensFullDelta(p) = p |> withReadOnlyContext SemanticTokens.handleFullDelta
         override __.TextDocumentSemanticTokensRange(p) = p |> withReadOnlyContext SemanticTokens.handleRange
-        override __.TextDocumentInlayHint(p) = p |> withReadOnlyContext InlayHint.handle
-        override __.InlayHintResolve(p) = p |> withReadOnlyContext InlayHint.resolve
+        override __.TextDocumentInlayHint(_) = notImplemented//(p) = p |> withReadOnlyContext InlayHint.handle
+        override __.InlayHintResolve(_) = notImplemented//(p) = p |> withReadOnlyContext InlayHint.resolve
         override __.WindowWorkDoneProgressCancel (_) = raise (System.NotImplementedException())
         override __.TextDocumentInlineValue(_) = notImplemented
         override __.TextDocumentPrepareCallHierarchy(p) = p |> withReadOnlyContext CallHierarchy.prepare

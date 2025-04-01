@@ -4,8 +4,8 @@ open System
 
 open Microsoft.CodeAnalysis
 open Microsoft.CodeAnalysis.Text
-open Microsoft.CodeAnalysis.CSharp
-open Microsoft.CodeAnalysis.CSharp.Syntax
+open Microsoft.CodeAnalysis.VisualBasic
+open Microsoft.CodeAnalysis.VisualBasic.Syntax
 open Ionide.LanguageServerProtocol.Server
 open Ionide.LanguageServerProtocol.Types
 open Ionide.LanguageServerProtocol.JsonRpc
@@ -90,7 +90,7 @@ module DocumentSymbol =
         nodeWithNoChildren :: flattenedChildren
 
     type private DocumentSymbolCollector (docText: SourceText, semanticModel: SemanticModel) =
-        inherit CSharpSyntaxWalker(SyntaxWalkerDepth.Token)
+        inherit VisualBasicSyntaxWalker(SyntaxWalkerDepth.Token)
 
         let mutable symbolStack = []
 
@@ -185,19 +185,14 @@ module DocumentSymbol =
             else
                 root |> flattenDocumentSymbol |> Array.ofSeq
 
-        override __.VisitNamespaceDeclaration(node) =
+        override __.VisitNamespaceStatement(node) =
             push node node.Name.Span
-            base.VisitNamespaceDeclaration(node)
+            base.VisitNamespaceStatement(node)
             pop node
 
-        override __.VisitFileScopedNamespaceDeclaration(node) =
-            push node node.Name.Span
-            base.VisitFileScopedNamespaceDeclaration(node)
-            pop node
-
-        override __.VisitEnumDeclaration(node) =
+        override __.VisitEnumStatement(node) =
             push node node.Identifier.Span
-            base.VisitEnumDeclaration(node)
+            base.VisitEnumStatement(node)
             pop node
 
         override __.VisitEnumMemberDeclaration(node) =
@@ -205,81 +200,62 @@ module DocumentSymbol =
             base.VisitEnumMemberDeclaration(node)
             pop node
 
-        override __.VisitClassDeclaration(node) =
+        override __.VisitClassStatement(node) =
             push node node.Identifier.Span
-            base.VisitClassDeclaration(node)
+            base.VisitClassStatement(node)
             pop node
 
-        override __.VisitRecordDeclaration(node) =
+        override __.VisitStructureStatement(node) =
             push node node.Identifier.Span
-            base.VisitRecordDeclaration(node)
+            base.VisitStructureStatement(node)
             pop node
 
-        override __.VisitStructDeclaration(node) =
+        override __.VisitInterfaceStatement(node) =
             push node node.Identifier.Span
-            base.VisitStructDeclaration(node)
+            base.VisitInterfaceStatement(node)
             pop node
 
-        override __.VisitInterfaceDeclaration(node) =
+        override __.VisitDelegateStatement(node) =
             push node node.Identifier.Span
-            base.VisitInterfaceDeclaration(node)
+            base.VisitDelegateStatement(node)
             pop node
 
-        override __.VisitDelegateDeclaration(node) =
-            push node node.Identifier.Span
-            base.VisitDelegateDeclaration(node)
-            pop node
+        override __.VisitConstructorBlock(node) =
+            push node node.SubNewStatement.Span
+            base.VisitConstructorBlock(node)
+            pop node.SubNewStatement
 
-        override __.VisitConstructorDeclaration(node) =
-            push node node.Identifier.Span
-            base.VisitConstructorDeclaration(node)
-            pop node
-
-        override __.VisitDestructorDeclaration(node) =
-            push node node.Identifier.Span
-            base.VisitDestructorDeclaration(node)
-            pop node
-
-        override __.VisitOperatorDeclaration(node) =
+        override __.VisitOperatorStatement(node) =
             push node node.OperatorToken.Span
-            base.VisitOperatorDeclaration(node)
+            base.VisitOperatorStatement(node)
             pop node
 
-        override __.VisitIndexerDeclaration(node) =
-            push node node.ThisKeyword.Span
-            base.VisitIndexerDeclaration(node)
-            pop node
-
-        override __.VisitConversionOperatorDeclaration(node) =
-            push node node.Type.Span
-            base.VisitConversionOperatorDeclaration(node)
-            pop node
-
-        override __.VisitMethodDeclaration(node) =
+        override __.VisitMethodStatement(node) =
             push node node.Identifier.Span
-            base.VisitMethodDeclaration(node)
+            base.VisitMethodStatement(node)
             pop node
 
-        override __.VisitPropertyDeclaration(node) =
+        override __.VisitPropertyStatement(node) =
             push node node.Identifier.Span
-            base.VisitPropertyDeclaration(node)
+            base.VisitPropertyStatement(node)
             pop node
 
         override __.VisitVariableDeclarator(node) =
-            let grandparent =
-                node.Parent |> Option.ofObj
-                |> Option.bind (fun node -> node.Parent |> Option.ofObj)
+            //let grandparent =
+            //    node.Parent |> Option.ofObj
+            //    |> Option.bind (fun node -> node.Parent |> Option.ofObj)
             // Only show field variables and ignore local variables
-            if grandparent.IsSome && grandparent.Value :? FieldDeclarationSyntax then
-                push node node.Identifier.Span
-                base.VisitVariableDeclarator(node)
-                pop node
-            else
-                base.VisitVariableDeclarator(node)
+            //if grandparent.IsSome && grandparent.Value :? FieldDeclarationSyntax then
+            //    push node node.Identifier.Span
+            //    base.VisitVariableDeclarator(node)
+            //    pop node
+            //else
+            //    base.VisitVariableDeclarator(node)
+            base.VisitVariableDeclarator(node)//TODO: fix this
 
-        override __.VisitEventDeclaration(node) =
+        override __.VisitEventStatement(node) =
             push node node.Identifier.Span
-            base.VisitEventDeclaration(node)
+            base.VisitEventStatement(node)
             pop node
 
     let private dynamicRegistration (clientCapabilities: ClientCapabilities) =
