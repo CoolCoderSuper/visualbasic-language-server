@@ -1,8 +1,8 @@
-module CSharpLanguageServer.Tests.InitializationTests
+module VisualBasicLanguageServer.Tests.InitializationTests
 
 open NUnit.Framework
 
-open CSharpLanguageServer.Tests.Tooling
+open VisualBasicLanguageServer.Tests.Tooling
 open Ionide.LanguageServerProtocol.Types
 
 let assertHoverWorks (client: ClientController) file pos expectedMarkupContent =
