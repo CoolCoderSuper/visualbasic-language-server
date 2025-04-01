@@ -1,11 +1,11 @@
-module CSharpLanguageServer.Tests.DiagnosticTests
+module VisualBasicLanguageServer.Tests.DiagnosticTests
 
 open System.Threading
 
 open NUnit.Framework
 open Ionide.LanguageServerProtocol.Types
 
-open CSharpLanguageServer.Tests.Tooling
+open VisualBasicLanguageServer.Tests.Tooling
 
 [<TestCase>]
 let testPushDiagnosticsWork () =
