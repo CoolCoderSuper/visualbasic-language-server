@@ -1,10 +1,10 @@
-module CSharpLanguageServer.Tests.DocumentationTests
+module VisualBasicLanguageServer.Tests.DocumentationTests
 
 open System
 
 open NUnit.Framework
 
-open CSharpLanguageServer.DocumentationUtil
+open VisualBasicLanguageServer.DocumentationUtil
 
 [<TestCase(
     "",

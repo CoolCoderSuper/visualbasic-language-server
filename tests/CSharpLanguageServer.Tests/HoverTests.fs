@@ -1,9 +1,9 @@
-module CSharpLanguageServer.Tests.HoverTests
+module VisualBasicLanguageServer.Tests.HoverTests
 
 open NUnit.Framework
 open Ionide.LanguageServerProtocol.Types
 
-open CSharpLanguageServer.Tests.Tooling
+open VisualBasicLanguageServer.Tests.Tooling
 
 [<TestCase>]
 let testHoverWorks() =

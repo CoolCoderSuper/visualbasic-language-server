@@ -22,9 +22,9 @@
     <PackageVersion Include="Microsoft.Build.Framework" Version="$(MSBuildPackageVersion)" />
     <PackageVersion Include="Microsoft.Build.Locator" Version="$(MSBuildLocatorPackageVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis" Version="$(RoslynPackageVersion)" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynPackageVersion)" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="$(RoslynPackageVersion)" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynPackageVersion)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic" Version="$(RoslynPackageVersion)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="$(RoslynPackageVersion)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynPackageVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Features" Version="$(RoslynPackageVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(RoslynPackageVersion)" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="$(RoslynPackageVersion)" />
