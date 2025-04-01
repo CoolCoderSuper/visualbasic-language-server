@@ -50,13 +50,5 @@ vim.lsp.enable('vb_ls')
 Be sure to also add the contents of the vim-config folder to your vim start directory to register improved syntax
 highlighting and the vbnet filetype.
 
-# Outdated
-
 ## Visual Studio Code
-### vytautassurvila/vscode-csharp-ls
-- Supports code decompilation from metadata
-
-See [csharp-ls](https://marketplace.visualstudio.com/items?itemName=vytautassurvila.csharp-ls) and [vscode-csharp-ls @ github](https://github.com/vytautassurvila/vscode-csharp-ls).
-
-### statiolake/vscode-csharp-ls
-See [vscode-csharp-ls](https://marketplace.visualstudio.com/items?itemName=statiolake.vscode-csharp-ls).
+See [vscode-vb-ls](https://marketplace.visualstudio.com/items?itemName=CoolCoderSuper.vscode-vb-ls).

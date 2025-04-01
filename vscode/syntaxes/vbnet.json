@@ -1,0 +1,192 @@
+{
+	"name": "VB.NET",
+	"scopeName": "source.vbnet",
+	"comment": "Modified from the original vb language from vscode.",
+	"patterns": [
+		{
+			"match": "\\n",
+			"name": "meta.ending-space"
+		},
+		{
+			"include": "#round-brackets"
+		},
+		{
+			"begin": "^(?=\\t)",
+			"end": "(?=[^\\t])",
+			"name": "meta.leading-space",
+			"patterns": [
+				{
+					"captures": {
+						"1": {
+							"name": "meta.odd-tab.tabs"
+						},
+						"2": {
+							"name": "meta.even-tab.tabs"
+						}
+					},
+					"match": "(\\t)(\\t)?"
+				}
+			]
+		},
+		{
+			"begin": "^(?= )",
+			"end": "(?=[^ ])",
+			"name": "meta.leading-space",
+			"patterns": [
+				{
+					"captures": {
+						"1": {
+							"name": "meta.odd-tab.spaces"
+						},
+						"2": {
+							"name": "meta.even-tab.spaces"
+						}
+					},
+					"match": "(  )(  )?"
+				}
+			]
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "storage.type.function.vbnet"
+				},
+				"2": {
+					"name": "entity.name.function.vbnet"
+				},
+				"3": {
+					"name": "punctuation.definition.parameters.vbnet"
+				},
+				"4": {
+					"name": "variable.parameter.function.vbnet"
+				},
+				"5": {
+					"name": "punctuation.definition.parameters.vbnet"
+				}
+			},
+			"match": "^\\s*((?i:function|sub))\\s*([a-zA-Z_]\\w*)\\s*(\\()([^)]*)(\\)).*\\n?",
+			"name": "meta.function.vbnet"
+		},
+		{
+			"begin": "(^[ \\t]+)?(?=')",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.whitespace.comment.leading.vbnet"
+				}
+			},
+			"end": "(?!\\G)",
+			"patterns": [
+				{
+					"begin": "'",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.vbnet"
+						}
+					},
+					"end": "\\n",
+					"name": "comment.line.apostrophe.vbnet"
+				}
+			]
+		},
+		{
+			"match": "(?i:\\b(AddHandler|Async|Await|AddressOf|Alias|And|AndAlso|As|ByRef|ByVal|Call|Case|Catch|CBool|CByte|CChar|CDate|CDbl|CDec|CInt|Class|Constraint|Statement|CLng|CObj|Const|Continue|CSByte|CShort|CSng|CStr|CType|CUInt|CULng|CUShort|Declare|Default|Delegate|Dim|DirectCast|Do|Each|Else|ElseIf|End|Enum|Erase|Error|Event|Exit|False|Finally|For|Next|Friend|Function|Get|GetType|GetXMLNamespace|Global|GoSub|GoTo|Handles|If|Implements|Imports|Namespace|and|Type|In|Inherits|Interface|Is|IsNot|Let|Lib|Like|Loop|Me|Mod|Module|MustInherit|MustOverride|MyBase|MyClass|Narrowing|New|Operator|in|Resume|Not|Nothing|NotInheritable|NotOverridable|Of|On|Option|Optional|Or|OrElse|Out|Overloads|Overridable|Overrides|ParamArray|Partial|Private|Property|Protected|Public|RaiseEvent|ReadOnly|ReDim|REM|RemoveHandler|Return|Select|Set|Shadows|Shared|Static|Step|Stop|Structure|Sub|SyncLock|Then|Throw|To|True|Try|TryCast|TypeOf|Until|Using|Variant|Wend|When|While|Widening|With|WithEvents|WriteOnly|Xor)\\b)",
+			"name": "keyword.control.vbnet"
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "storage.type.vbnet"
+				},
+				"2": {
+					"name": "variable.other.bfeac.vbnet"
+				},
+				"3": {
+					"name": "meta.separator.comma.vbnet"
+				}
+			},
+			"match": "(?i:(dim)\\s*(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)\\s*(,?)))",
+			"name": "variable.other.dim.vbnet"
+		},
+		{
+			"begin": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.vbnet"
+				}
+			},
+			"end": "\"",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.vbnet"
+				}
+			},
+			"name": "string.quoted.double.vbnet",
+			"patterns": [
+				{
+					"match": "\"\"",
+					"name": "constant.character.escape.apostrophe.vbnet"
+				}
+			]
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "punctuation.definition.variable.vbnet"
+				}
+			},
+			"match": "(\\$)[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b\\s*",
+			"name": "variable.other.vbnet"
+		},
+		{
+			"match": "(?i:(?<=as )(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b))",
+			"name": "support.type.vbnet"
+		},
+		{
+			"match": "-?\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f)?\\b",
+			"name": "constant.numeric.vbnet"
+		},
+		{
+			"match": "(?i:\\b(Char|Boolean|Byte|Date|Decimal|Double|Integer|DateTime|Long|Object|SByte|UInteger|ULong|UShort|Short|Single|String|vbtrue|vbfalse|vbcr|vbcrlf|vbformfeed|vblf|vbnewline|vbnullchar|vbnullstring|int16|int32|int64|vbtab|vbverticaltab|vbbinarycompare|vbtextcomparevbsunday|vbmonday|vbtuesday|vbwednesday|vbthursday|vbfriday|vbsaturday|vbusesystemdayofweek|vbfirstjan1|vbfirstfourdays|vbfirstfullweek|vbgeneraldate|vblongdate|vbshortdate|vblongtime|vbshorttime|vbobjecterror|vbEmpty|vbNull|vbInteger|vbLong|vbSingle|vbDouble|vbCurrency|vbDate|vbString|vbObject|vbError|vbBoolean|vbVariant|vbDataObject|vbDecimal|vbByte|vbArray)\\b)",
+			"name": "support.type.vbnet"
+		},
+		{
+			"captures": {
+				"1": {
+					"name": "entity.name.function.vbnet"
+				}
+			},
+			"match": "(?i:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))",
+			"name": "support.function.vbnet"
+		},
+		{
+			"match": "(?i:((?<=(\\+|=|-|\\&|\\\\|/|<|>|\\(|,))\\s*\\b([a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?)\\b(?!(\\(|\\.))|\\b([a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?)\\b(?=\\s*(\\+|=|-|\\&|\\\\|/|<|>|\\(|\\)))))",
+			"name": "variable.other.vbnet"
+		},
+		{
+			"match": "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|/=|%=|\\+=|\\-=|&=|\\^=|\\b(in|instanceof|new|delete|typeof|void)\\b",
+			"name": "keyword.operator.js"
+		}
+	],
+	"repository": {
+		"round-brackets": {
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.section.round-brackets.begin.vbnet"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.section.round-brackets.end.vbnet"
+				}
+			},
+			"name": "meta.round-brackets",
+			"patterns": [
+				{
+					"include": "source.vbnet"
+				}
+			]
+		}
+	}
+}
