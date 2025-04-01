@@ -113,7 +113,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Upgrade dependencies: Roslyn, ICSharpCode.Decompiler, Microsoft.Build;
 * Fix for a crash in serverEventLoop
   - By @kstatz12 in https://github.com/razzmatazz/csharp-language-server/issues/113
-* Possible fixes to https://github.com/razzmatazz/csharp-language-server/issues/62 
+* Possible fixes to https://github.com/razzmatazz/csharp-language-server/issues/62
 and https://github.com/razzmatazz/csharp-language-server/issues/57
   - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/112
 * Fix issues with code actions and other functionality that was
@@ -135,12 +135,12 @@ with `csharp.` settings;
 ## [0.8.0] - 2023-05-06 / Varėna
 * Add more symbols to documentSymbols & codeLens
   - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/87
-* Support type and call hierarchy 
+* Support type and call hierarchy
   - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/74
 * Semantic token types fix
-  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/84 
+  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/84
 * Fix crash if there is no newline at the end of the last line
-  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/83 
+  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/83
 
 ### More about Varėna, Lithuania
 - [Varėna on WP](https://en.wikipedia.org/wiki/Var%C4%97na)
@@ -162,7 +162,7 @@ with `csharp.` settings;
 * Semantic token improvements
   - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/70
 * Inlay hint support
-  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/71 
+  - By Adam Tao @tcx4c70 in https://github.com/razzmatazz/csharp-language-server/pull/71
   and https://github.com/razzmatazz/csharp-language-server/pull/73
 * Remove timeout on handler for `codelens/resolve` -- that wasn't a good idea to begin with
 
@@ -224,7 +224,7 @@ with `csharp.` settings;
 ## [0.5.5] - 2022-08-23 / Prienai
 * Fix intermittent server crashes after upgrading to latest Ionide.LanguageServerProtocol:
   - https://github.com/razzmatazz/csharp-language-server/issues/44
-  
+
 ### More about Prienai, Lithuania
 - [Google Images on Prienai](https://www.google.com/search?tbm=isch&q=prienai+lithuania)
 - [Prienai on WP](https://en.wikipedia.org/wiki/Prienai)
@@ -234,7 +234,7 @@ with `csharp.` settings;
 * Properly format + "localize" symbol names in `textDocument/documentSymbol` response;
   - Reported by @joefbsjr in https://github.com/razzmatazz/csharp-language-server/issues/42
 * Properly format ITypeSymbol (structs/enums/classes) when displaying type info on `workspace/symbol` and other LSP requests;
-  - Reported by @joefbsjr in https://github.com/razzmatazz/csharp-language-server/issues/41 
+  - Reported by @joefbsjr in https://github.com/razzmatazz/csharp-language-server/issues/41
 * Load solution-in-sync when initializing. This will help "server initializing" notification work better for clients that depend on `initialize` request not to complete until the server/solution is properly loaded initialized.
   - Reported by @joefbsjr in https://github.com/razzmatazz/csharp-language-server/issues/40
 
@@ -258,7 +258,7 @@ with `csharp.` settings;
   - fixes https://github.com/razzmatazz/csharp-language-server/issues/35 by @Decodetalkers;
 * Expose actual csharp compiler diagnostics ids (e.g. CS0117) for nicer diagnostics messages.
 
-## [0.5.1] - 2022-05-19 / Straigiškė 
+## [0.5.1] - 2022-05-19 / Straigiškė
 - Fix another long-standing bug with incremental document synchronisation;
   - very visible on nvim but affects all editors/clients;
   - reported by @Decodetalkers https://github.com/razzmatazz/csharp-language-server/issues/31;
@@ -297,12 +297,12 @@ with `csharp.` settings;
 
 ## [0.3.0]
 - Run diagnostics resolution outside the main state actor so we don't lock up other processing;
-- Add timeout for codelens requests to avoid excessive CPU usage as that is prone to run for a long time; 
+- Add timeout for codelens requests to avoid excessive CPU usage as that is prone to run for a long time;
 - Really fix write-request serialization;
 - Revert the emacs-29 fix, didn't do much.
 
 ## [0.2.1]
-- Carefully observe incoming requests from StreamJsonRpc to actually serialize write-access to solution state; 
+- Carefully observe incoming requests from StreamJsonRpc to actually serialize write-access to solution state;
   - Should fix sync issues (another attempt..)
 - Attempt to fix an issue with emacs-29 by setting `bufferSize` in `Console.OpenStandardInput` call.
 
@@ -324,7 +324,7 @@ with `csharp.` settings;
   - Needs client implementation of `workspace/executeCommand`: `csharp.showReferences`;
 - Nicer on-hover markdown that should match the context better;
 - Expose properties & events on textDocument/documentSymbol;
-- Pull `add using import` code action to the top of action list, mark it prefered and with `Kind`, [csharp-language-server#9](https://github.com/razzmatazz/csharp-language-server/issues/9). 
+- Pull `add using import` code action to the top of action list, mark it prefered and with `Kind`, [csharp-language-server#9](https://github.com/razzmatazz/csharp-language-server/issues/9).
 
 ## [0.1.7]
 - Bump roslyn libs to a newer version;

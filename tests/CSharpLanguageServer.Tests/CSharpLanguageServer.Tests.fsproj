@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CSharpLanguageServer\CSharpLanguageServer.fsproj" />
+    <ProjectReference Include="..\..\src\VisualBasicLanguageServer\VisualBasicLanguageServer.fsproj" />
   </ItemGroup>
 
 </Project>
