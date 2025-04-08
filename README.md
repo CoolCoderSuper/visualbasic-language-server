@@ -47,8 +47,8 @@ vim.lsp.config['vb_ls'] = {
 
 vim.lsp.enable('vb_ls')
 ```
-Be sure to also add the contents of the vim-config folder to your vim start directory to register improved syntax
-highlighting and the vbnet filetype.
+You will also have to install the [vbnet.nvim](https://github.com/CoolCoderSuper/vbnet.nvim) plugin to register the
+vbnet filetype and improved syntax highlighting.
 
 ## Visual Studio Code
 See [vscode-vb-ls](https://marketplace.visualstudio.com/items?itemName=CoolCoderSuper.vscode-vb-ls).
