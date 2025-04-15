@@ -233,13 +233,11 @@ module DiagnosticSeverity =
 
 module Diagnostic =
     let fromRoslynDiagnostic (diagnostic: Microsoft.CodeAnalysis.Diagnostic): Diagnostic =
-        let diagnosticCodeUrl =
-            diagnostic.Id.ToLowerInvariant()
-            |> sprintf "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/%s"
+        let diagnosticCodeUrl = diagnostic.Descriptor.HelpLinkUri |> Option.ofObj |> Option.defaultValue "https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/error-messages/" |> URI
         { Range = diagnostic.Location.GetLineSpan().Span |> Range.fromLinePositionSpan
           Severity = Some (diagnostic.Severity |> DiagnosticSeverity.fromRoslynDiagnosticSeverity)
           Code = Some (U2.C2 diagnostic.Id)
-          CodeDescription = Some { Href = diagnosticCodeUrl |> URI }
+          CodeDescription = Some { Href = diagnosticCodeUrl }
           Source = Some "lsp"
           Message = diagnostic.GetMessage()
           RelatedInformation = None
