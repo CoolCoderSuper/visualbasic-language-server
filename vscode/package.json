@@ -3,7 +3,7 @@
     "displayName": "vscode-vb-ls",
     "description": "VSCode integration for vb-ls language server and more advanced VB.NET grammar support.",
     "publisher": "CoolCoderSuper",
-    "version": "0.1.1",
+    "version": "0.3.0",
     "engines": {
         "vscode": "^1.74.0"
     },
