@@ -434,7 +434,7 @@ type TfmCategory =
     | Unknown
 
 
-let selectLatestTfm (tfms: string seq) : string option =
+let selectMostCapableCompatibleTfm (tfms: string seq) : string option =
     let parseTfm (tfm: string) : TfmCategory =
         let patterns = [
             @"^net(?<major>\d)(?<minor>\d)?(?<build>\d)?$", NetFramework
@@ -472,8 +472,8 @@ let selectLatestTfm (tfms: string seq) : string option =
     |> Seq.tryHead
 
 
-let loadProjectTfms (logger: ILogger) (projs: string seq) : Map<string, list<string>> =
-    let mutable projectTfms = Map.empty
+let applyWorkspaceTargetFrameworkProp (logger: ILogger) (projs: string seq) props =
+    let tfms = new List<string>()
 
     for projectFilename in projs do
         let projectCollection = new Microsoft.Build.Evaluation.ProjectCollection();
@@ -484,49 +484,51 @@ let loadProjectTfms (logger: ILogger) (projs: string seq) : Map<string, list<str
 
             let noneIfEmpty s =
                 s |> Option.ofObj
-                  |> Option.bind (fun s -> if String.IsNullOrEmpty(s) then None else Some s)
+                    |> Option.bind (fun s -> if String.IsNullOrEmpty(s) then None else Some s)
 
-            let targetFramework =
-                match buildProject.GetPropertyValue("TargetFramework") |> noneIfEmpty with
-                | Some tfm -> [tfm.Trim()]
-                | None -> []
+            let targetFramework = buildProject.GetPropertyValue("TargetFramework") |> noneIfEmpty
 
-            let targetFrameworks =
-                match buildProject.GetPropertyValue("TargetFrameworks") |> noneIfEmpty with
-                | Some tfms -> tfms.Split(";") |> Array.map (fun s -> s.Trim()) |> List.ofArray
-                | None -> []
+            match targetFramework with
+            | Some tfm ->
+                tfms.Add(tfm.Trim())
+            | _ -> ()
 
-            projectTfms <- projectTfms |> Map.add projectFilename (targetFramework @ targetFrameworks)
+            let targetFrameworks = buildProject.GetPropertyValue("TargetFrameworks") |> noneIfEmpty
+
+            match targetFrameworks with
+            | Some semicolonSeparatedTfms ->
+                for tfm in semicolonSeparatedTfms.Split(";") do
+                    tfms.Add(tfm.Trim())
+            | _ -> ()
 
             projectCollection.UnloadProject(buildProject)
         with
         | :? InvalidProjectFileException as ipfe ->
-            logger.LogDebug(
-                "loadProjectTfms: failed to load {projectFilename}: {ex}",
+            logger.LogDebug (
+                "applyWorkspaceTargetFrameworkProp: failed to load {projectFilename}: {ex}",
                 projectFilename,
-                ipfe.GetType() |> string)
+                (string (ipfe.GetType()))
+            )
 
-    projectTfms
+    let distinctTfms = tfms |> Set.ofSeq
 
-let applyWorkspaceTargetFrameworkProp (tfmsPerProject: Map<string, list<string>>) props : Map<string, string> =
-    let selectedTfm =
-        match tfmsPerProject.Count with
-        | 0 -> None
-        | _ ->
-            tfmsPerProject.Values
-            |> Seq.map Set.ofSeq
-            |> Set.intersectMany
-            |> selectLatestTfm
+    logger.LogDebug (
+        "applyWorkspaceTargetFrameworkProp: distinctTfms={distinctTfms}",
+        String.Join(";", distinctTfms)
+    )
 
-    match selectedTfm with
-    | Some tfm -> props |> Map.add "TargetFramework" tfm
-    | None -> props
+    match distinctTfms.Count with
+    | 0 -> props
+    | 1 -> props
+    | _ ->
+        match selectMostCapableCompatibleTfm distinctTfms with
+        | Some tfm -> props |> Map.add "TargetFramework" tfm
+        | None -> props
+
 
 let resolveDefaultWorkspaceProps (logger: ILogger) projs : Map<string, string> =
-    let tfmsPerProject = loadProjectTfms logger projs
-
     Map.empty
-    |> applyWorkspaceTargetFrameworkProp tfmsPerProject
+    |> applyWorkspaceTargetFrameworkProp logger projs
 
 
 let tryLoadSolutionOnPath
