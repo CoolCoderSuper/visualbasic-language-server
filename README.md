@@ -1,3 +1,12 @@
+# NOTICE
+This project has been deprecated and replaced by [vb-ls](https://github.com/CoolCoderSuper/vb-ls).
+
+This codebase is hard to maintain and keep up to date with the latest Roslyn/MSBuild versions.
+
+The new version uses the Roslyn LSP directly, and is a lot faster, reliable, and feature rich.
+
+If you like this project please check it out and it means a lot to me.
+
 # Description
 This is a hacky Roslyn-based LSP server for Visual Basic, based on
 [csharp-ls](https://github.com/razzmatazz/csharp-language-server).
