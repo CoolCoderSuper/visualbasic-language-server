@@ -633,7 +633,12 @@ let selectPreferredSolution (slnFiles: string list): option<string> =
     let getProjectCount (slnPath: string) =
         try
             let sln = SolutionFile.Parse(slnPath)
-            Some (sln.ProjectsInOrder.Count, slnPath)
+            let projectCount = sln.ProjectsInOrder.Count
+            let depth =
+                slnPath
+                |> Path.GetFullPath
+                |> fun p -> p.Split(Path.DirectorySeparatorChar).Length
+            Some (depth, projectCount, slnPath)
         with _ ->
             None
 
@@ -642,8 +647,8 @@ let selectPreferredSolution (slnFiles: string list): option<string> =
     | slnFiles ->
         slnFiles
         |> Seq.choose getProjectCount
-        |> Seq.sortByDescending fst
-        |> Seq.map snd
+        |> Seq.sortBy (fun (depth, projectCount, _) -> depth, -projectCount)
+        |> Seq.map (fun (_, _, path) -> path)
         |> Seq.tryHead
 
 let findAndLoadSolutionOnDir
